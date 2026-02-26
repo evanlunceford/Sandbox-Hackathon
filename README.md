@@ -53,7 +53,7 @@ The frontend will be running at **http://localhost:5173**. The page hot-reloads 
    ```
 4. Start the server:
    ```
-   uvicorn main:app --reload
+   python main.py
    ```
 
 The backend will be running at **http://localhost:8000**. The `--reload` flag means it restarts automatically when you save changes.
@@ -106,6 +106,6 @@ A page can import and use components, but components should not import pages.
 | Task              | Command                        | Directory         |
 |-------------------|--------------------------------|-------------------|
 | Start frontend    | `npm run dev`                  | `src/frontend`    |
-| Start backend     | `uvicorn main:app --reload`    | `src/backend`     |
+| Start backend     | `python main.py`               | `src/backend`     |
 | Install frontend deps | `npm install`              | `src/frontend`    |
 | Install backend deps  | `pip install fastapi uvicorn` | anywhere     |
