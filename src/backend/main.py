@@ -2,6 +2,7 @@ import os
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
@@ -26,10 +27,9 @@ app.add_middleware(
 
 app.include_router(recommendation_router)
 
-
-@app.get("/")
-def read_root():
-    return {"message": "Song Recommender API is running"}
+# Serve the React build in production (public/ is copied in by Docker)
+if os.path.isdir("public"):
+    app.mount("/", StaticFiles(directory="public", html=True), name="frontend")
 
 
 if __name__ == "__main__":

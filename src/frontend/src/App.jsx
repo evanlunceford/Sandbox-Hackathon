@@ -9,7 +9,7 @@ import TitleEffect from './components/TitleEffect';
 import TypingEffect from './components/TypingEffect';
 import SongCarousel from './components/SongCarousel';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
 const DROP_DURATION = 700;
 
 const DESCRIPTION_PHRASES = [

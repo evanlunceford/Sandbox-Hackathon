@@ -12,12 +12,16 @@ router = APIRouter(prefix="/recommend", tags=["recommendations"])
 @limiter.limit("20/minute;100/hour")
 async def recommend(request: Request, file: UploadFile = File(...)):
     """Upload a PDF and receive the top 5 most thematically similar songs."""
-    if not file.filename.lower().endswith(".pdf"):
-        raise HTTPException(status_code=400, detail="Only PDF files are accepted")
+    try:
+        if not file.filename.lower().endswith(".pdf"):
+            raise HTTPException(status_code=400, detail="Only PDF files are accepted")
 
-    text = await PdfService.extract_text(file)
-    if not text:
-        raise HTTPException(status_code=422, detail="Could not extract text from the PDF")
+        text = await PdfService.extract_text(file)
+        if not text:
+            raise HTTPException(status_code=422, detail="Could not extract text from the PDF")
 
-    results = RecommendationService.recommend_from_text(text)
-    return results
+        results = RecommendationService.recommend_from_text(text)
+        return results
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Could not extract text from the PDF")

@@ -18,6 +18,7 @@ pypdf
 # Utilities
 python-dotenv
 python-multipart
+aiofiles
 
 # Rate limiting
 slowapi

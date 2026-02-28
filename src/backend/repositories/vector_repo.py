@@ -59,8 +59,9 @@ class VectorRepo:
     def search(vector: list[float], top_k: int = 5) -> list[ScoredPoint]:
         """Return the top_k most similar songs by cosine similarity."""
         client = _client()
-        return client.search(
+        result = client.query_points(
             collection_name=COLLECTION_NAME,
-            query_vector=vector,
+            query=vector,
             limit=top_k,
         )
+        return result.points

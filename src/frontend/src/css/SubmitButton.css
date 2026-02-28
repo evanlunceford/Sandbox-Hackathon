@@ -2,7 +2,7 @@
   padding: 0.75rem 2.5rem;
   font-size: var(--font-size-md);
   font-weight: 600;
-  background: var(--accent);
+  background: var(--blue);
   color: var(--text-white);
   border: none;
   border-radius: 8px;
@@ -15,7 +15,7 @@
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: var(--accent-hover);
+  background: var(--blue-hover);
 }
 
 .submit-btn:disabled {
