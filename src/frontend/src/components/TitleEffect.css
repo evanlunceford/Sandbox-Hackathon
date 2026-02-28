@@ -13,13 +13,13 @@
 .glitch::before {
   left: 3px;
   text-shadow: -2px 0 red;
-  animation: glitch-1 5s linear infinite alternate-reverse;
+  animation: glitch-1 20s linear infinite alternate-reverse;
 }
 
 .glitch::after {
   left: -3px;
   text-shadow: -2px 0 blue;
-  animation: glitch-2 5s linear infinite alternate-reverse;
+  animation: glitch-2 20s linear infinite alternate-reverse;
 }
 
 @keyframes glitch-1 {

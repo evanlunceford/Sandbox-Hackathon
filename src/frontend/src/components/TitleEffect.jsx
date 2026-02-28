@@ -18,7 +18,6 @@ export default function TitleEffect({
   const containerRef = useRef(null);
   const hasRevealedRef = useRef(false);
 
-  // ── Decrypt on view ──────────────────────────────────────────────────────
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {

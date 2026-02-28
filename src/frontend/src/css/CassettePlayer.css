@@ -1,228 +1,5 @@
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-main,
-menu,
-nav,
-section,
-summary {
-  display: block;
-}
-
-audio,
-canvas,
-progress,
-video {
-  display: inline-block;
-}
-
-audio:not([controls]) {
-  display: none;
-  height: 0;
-}
-
-progress {
-  vertical-align: baseline;
-}
-
-template,
-[hidden],
-input[hidden] {
-  display: none !important;
-}
-
-a {
-  background-color: transparent;
-}
-
-a:active,
-a:hover {
-  outline-width: 0;
-}
-
-abbr[title] {
-  border-bottom: none;
-  text-decoration: underline;
-  text-decoration: underline dotted;
-}
-
-b,
-strong {
-  font-weight: inherit;
-}
-
-b,
-strong {
-  font-weight: bolder;
-}
-
-dfn {
-  font-style: italic;
-}
-
-h1 {
-  font-size: 2em;
-  margin: 0.67em 0;
-}
-
-mark {
-  background-color: #ff0;
-  color: #000;
-}
-
-small {
-  font-size: 80%;
-}
-
-sub,
-sup {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline;
-}
-
-sub {
-  bottom: -0.25em;
-}
-
-sup {
-  top: -0.5em;
-}
-
-img {
-  border-style: none;
-}
-
-svg:not(:root) {
-  overflow: hidden;
-}
-
-code,
-kbd,
-pre,
-samp {
-  font-family: monospace, monospace;
-  font-size: 1em;
-}
-
-figure {
-  margin: 1em 40px;
-}
-
-hr {
-  box-sizing: content-box;
-  height: 0;
-  overflow: visible;
-}
-
-button,
-input,
-select,
-textarea {
-  font: inherit;
-}
-
-optgroup {
-  font-weight: bold;
-}
-
-button,
-input,
-select {
-  overflow: visible;
-}
-
-button,
-input,
-select,
-textarea {
-  margin: 0;
-}
-
-button,
-select {
-  text-transform: none;
-}
-
-button,
-[type="button"],
-[type="reset"],
-[type="submit"] {
-  cursor: pointer;
-}
-
-[disabled] {
-  cursor: default;
-}
-
-button,
-html [type="button"],
-[type="reset"],
-[type="submit"] {
-  -webkit-appearance: button;
-}
-
-button::-moz-focus-inner,
-input::-moz-focus-inner {
-  border: 0;
-  padding: 0;
-}
-
-button:-moz-focusring,
-input:-moz-focusring {
-  outline: 1px dotted ButtonText;
-}
-
-fieldset {
-  border: 1px solid #c0c0c0;
-  margin: 0 2px;
-  padding: 0.35em 0.625em 0.75em;
-}
-
-legend {
-  box-sizing: border-box;
-  color: inherit;
-  display: table;
-  max-width: 100%;
-  padding: 0;
-  white-space: normal;
-}
-
-textarea {
-  overflow: auto;
-}
-
-[type="checkbox"],
-[type="radio"] {
-  box-sizing: border-box;
-  padding: 0;
-}
-
-[type="number"]::-webkit-inner-spin-button,
-[type="number"]::-webkit-outer-spin-button {
-  height: auto;
-}
-
-[type="search"] {
-  -webkit-appearance: textfield;
-}
-
-[type="search"]::-webkit-search-cancel-button,
-[type="search"]::-webkit-search-decoration {
-  -webkit-appearance: none;
-}
-
-* {
-  box-sizing: border-box;
-}
-
 :root {
-  --background: #dcedc8;
+  --background: var(--beige);
 }
 
 .footer {
@@ -233,7 +10,7 @@ textarea {
   justify-content: center;
   font-family: "Dancing Script", cursive;
   font-weight: 700;
-  color: #231f20;
+  color: var(--black);
 }
 
 .header {
@@ -247,7 +24,6 @@ textarea {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 20px;
 }
 
 #player {
@@ -256,11 +32,11 @@ textarea {
 
 
 .github-link svg {
-  fill: #686d69;
+  fill: var(--grey);
 }
 
 .github-link:hover svg {
-  fill: #3e403e;
+  fill: var(--black-hover);
 }
 
 .heart {
@@ -278,14 +54,34 @@ textarea {
 }
 
 .tape {
+  text-shadow: none;
   width: 500px;
   height: 270px;
   margin: 0 auto;
   position: relative;
   padding: 25px 25px 0 25px;
-  background-color: #231f20;
+  background-color: var(--black);
   border-radius: 15px;
   font-size: 16px;
+  z-index: 999;
+}
+
+.tape.has-file {
+  border: 2px solid var(--white);
+  animation:
+    cassette-click 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards,
+    cassette-float  3s ease-in-out 0.4s infinite;
+}
+
+@keyframes cassette-click {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+@keyframes cassette-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
 }
 
 .tape-screw {
@@ -294,7 +90,7 @@ textarea {
   padding: 0.188em;
   position: absolute;
   border-radius: 50%;
-  background-color: #c3c3c5;
+  background-color: var(--border-dark);
   overflow: hidden;
 }
 
@@ -325,7 +121,7 @@ textarea {
 .tape-screw-overflow {
   width: 100%;
   height: 100%;
-  background-color: #1d1b1e;
+  background-color: var(--surface);
 }
 
 .tape-screw-overflow > div:before, .tape-screw-overflow > div:after {
@@ -333,7 +129,7 @@ textarea {
   position: absolute;
   width: 0.625em;
   height: 0.625em;
-  background-color: #c3c3c5;
+  background-color: var(--border-dark);
   border-radius: 0.188em;
 }
 
@@ -363,12 +159,11 @@ textarea {
   padding-left: 6px;
   padding-top: 12px;
   overflow: hidden;
-  background-color: red;
   border-radius: 15px 15px 0 0;
   font-family: "Rowdies", cursive;
   font-size: 26px;
-  color: #686d69;
-  background-color: #faeed8;
+  color: var(--grey);
+  background-color: var(--beige-100);
 }
 
 .tape-header:before {
@@ -379,25 +174,26 @@ textarea {
   left: 36px;
   right: 16px;
   z-index: 1;
-  box-shadow: 0px -1px 0px 0px #d3d0c7, 0px -2px 0px 0px #9a968b, 0px 1px 0px 0px #9a968b, 0px 2px 0px 0px #d3d0c7;
+  box-shadow: 0px -1px 0px 0px var(--border-dark), 0px -2px 0px 0px var(--grey), 0px 1px 0px 0px var(--grey), 0px 2px 0px 0px var(--border-dark);
 }
 
 .tape-title {
   position: absolute;
-  top: 3px;
+  top: 10px;
   right: 50px;
-  color: #2c303a;
+  color: var(--black);
   z-index: 1;
   font-family: "Homemade Apple", cursive;
   transform: rotate(-5deg);
   font-size: 20px;
+  animation: none !important;
 }
 
 .tape-body {
   height: 120px;
   padding-top: 5px;
   border-radius: 0 0 15px 15px;
-  background: linear-gradient(to bottom, #e97f2f 0%, #e97f2f 99px, #c5532e 100px, #c5532e 100%);
+  background: linear-gradient(to bottom, var(--orange) 0%, var(--orange) 99px, var(--orange-active) 100px, var(--orange-active) 100%);
 }
 
 .tape-window {
@@ -456,10 +252,15 @@ textarea {
   margin-top: 1px;
   width: 58px;
   height: 58px;
-  border: 5px solid #a2a3a7;
+  border: 5px solid var(--text-heading);
   border-radius: 50px;
   background-color: var(--background);
   animation: tape-spol-rotate var(--speed-spool) linear infinite;
+  animation-play-state: paused;
+}
+
+.tape.has-file .tape-spoolbar {
+  animation-play-state: running;
 }
 
 .tape-spoolbar:before {
@@ -479,7 +280,7 @@ textarea {
   width: 6px;
   top: -2px;
   bottom: -2px;
-  background-color: #a2a3a7;
+  background-color: var(--text-heading);
 }
 
 .tape-spoolbar > div:nth-child(2) {
@@ -506,9 +307,14 @@ textarea {
   min-width: 90px;
   min-height: 90px;
   border-radius: 50%;
-  border: 1px solid #0f0f0f;
-  background: #6a352d repeating-radial-gradient(#6a352d, #6a352d 1px, #7c3835 2px, #7c3835 3px);
+  border: 1px solid var(--pure-black);
+  background: var(--maroon-active) repeating-radial-gradient(var(--maroon-active), var(--maroon-active) 1px, var(--maroon) 2px, var(--maroon) 3px);
   animation: tape-spol-rotate 7s linear infinite;
+  animation-play-state: paused;
+}
+
+.tape.has-file .tape-film {
+  animation-play-state: running;
 }
 
 .tape-film:before {
@@ -520,7 +326,7 @@ textarea {
   top: 50%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background-color: #98999d;
+  background-color: var(--text-heading);
 }
 
 .tape-spool:nth-child(1) .tape-film {
@@ -538,7 +344,7 @@ textarea {
   width: 280px;
   height: 67px;
   margin: 6px auto 0;
-  border-top: 3px solid #828186;
+  border-top: 3px solid var(--grey);
 }
 
 .tape-footer:before {
@@ -550,7 +356,7 @@ textarea {
   right: 0;
   transform: rotate(-20deg);
   transform-origin: 0 0;
-  background-color: #828186;
+  background-color: var(--grey);
 }
 
 .tape-footer:after {
@@ -562,7 +368,7 @@ textarea {
   width: 2px;
   transform: rotate(20deg);
   transform-origin: 0 0;
-  background-color: #828186;
+  background-color: var(--grey);
 }
 
 .tape-hole:before, .tape-hole:after {
@@ -643,15 +449,15 @@ textarea {
 }
 
 [type='range']:focus::-webkit-slider-runnable-track {
-  background: #bcc9ab;
+  background: var(--blue);
 }
 
 [type='range']:focus::-ms-fill-lower {
-  background: #afbf9c;
+  background: var(--blue-hover);
 }
 
 [type='range']:focus::-ms-fill-upper {
-  background: #bcc9ab;
+  background: var(--blue);
 }
 
 [type='range']::-webkit-slider-runnable-track {
@@ -660,15 +466,15 @@ textarea {
   transition: all .2s ease;
   width: 100%;
   box-shadow: 0 0 0 transparent, 0 0 0 rgba(13, 13, 13, 0);
-  background: #afbf9c;
-  border: 0 solid tranparent;
+  background: var(--blue);
+  border: 0 solid transparent;
   border-radius: 5px;
 }
 
 [type='range']::-webkit-slider-thumb {
   box-shadow: 0 0 0 transparent, 0 0 0 rgba(13, 13, 13, 0);
-  background: #89967a;
-  border: 0 solid #eceff1;
+  background: var(--blue-active);
+  border: 0 solid var(--beige-50);
   border-radius: 12px;
   box-sizing: border-box;
   cursor: default;
@@ -684,16 +490,16 @@ textarea {
   height: 6px;
   transition: all .2s ease;
   width: 100%;
-  background: #afbf9c;
-  border: 0 solid tranparent;
+  background: var(--blue);
+  border: 0 solid transparent;
   border-radius: 5px;
   height: 3px;
 }
 
 [type='range']::-moz-range-thumb {
   box-shadow: 0 0 0 transparent, 0 0 0 rgba(13, 13, 13, 0);
-  background: #89967a;
-  border: 0 solid #eceff1;
+  background: var(--blue-active);
+  border: 0 solid var(--beige-50);
   border-radius: 12px;
   box-sizing: border-box;
   cursor: default;
@@ -714,22 +520,22 @@ textarea {
 
 [type='range']::-ms-fill-lower {
   box-shadow: 0 0 0 transparent, 0 0 0 rgba(13, 13, 13, 0);
-  background: #a2b58d;
-  border: 0 solid tranparent;
+  background: var(--blue-hover);
+  border: 0 solid transparent;
   border-radius: 10px;
 }
 
 [type='range']::-ms-fill-upper {
   box-shadow: 0 0 0 transparent, 0 0 0 rgba(13, 13, 13, 0);
-  background: #afbf9c;
-  border: 0 solid tranparent;
+  background: var(--blue);
+  border: 0 solid transparent;
   border-radius: 10px;
 }
 
 [type='range']::-ms-thumb {
   box-shadow: 0 0 0 transparent, 0 0 0 rgba(13, 13, 13, 0);
-  background: #89967a;
-  border: 0 solid #eceff1;
+  background: var(--blue-active);
+  border: 0 solid var(--beige-50);
   border-radius: 12px;
   box-sizing: border-box;
   cursor: default;

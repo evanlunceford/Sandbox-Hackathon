@@ -19,7 +19,7 @@
 }
 
 .dropzone.has-file {
-  border-color: var(--accent-green);
+  border-color: var(--white);
   border-style: solid;
 }
 

@@ -1,14 +1,16 @@
 import "../css/CassettePlayer.css";
 import "../css/styles.css";
-export default function CassettePlayer({ 
+export default function CassettePlayer({
     onDrop,
     inputRef,
     onInputChange,
-    title = "Upload any file", 
-    loading = false, }) {
+    title = "Upload any file",
+    hasFile = false,
+    loading = false,
+}) {
     return (
         <div className="container">
-            <div className="tape">
+            <div className={`tape${hasFile ? ' has-file' : ''}`}>
             <div className="tape-screws">
                 <div className="tape-screw">
                 <div className="tape-screw-overflow">
@@ -51,26 +53,31 @@ export default function CassettePlayer({
                         </div>
                     </div>
                     {/* Drop zone */}
-                    <div
-                        className={`dropzone`}
-                        onClick={() => inputRef.current?.click()}
-                        onDragOver={(e) => { e.preventDefault() }}
-                        onDragLeave={() => {}}
-                        onDrop={onDrop}
-                    >
-                    <input
-                        ref={inputRef}
-                        type="file"
-                        accept=".pdf"
-                        className="file-input"
-                        onChange={onInputChange}
-                    />
-                    <div className="file-icon-container">
-                        <img className="file-icon" src="/images/add.svg" />    
-                        <p className="file-detail">Upload Here</p>
-                    </div>
+                    {!hasFile && (
+                        <div
+                            className="dropzone"
+                            onClick={() => inputRef.current?.click()}
+                            onDragOver={(e) => { e.preventDefault() }}
+                            onDragLeave={() => {}}
+                            onDrop={onDrop}
+                        >
+                            <input
+                                ref={inputRef}
+                                type="file"
+                                accept=".pdf"
+                                className="file-input"
+                                onChange={onInputChange}
+                            />
+                            <div className="file-icon-container">
+                                {hasFile
+                                    ? <img className="file-icon" src="/images/file-uploaded.svg" />
+                                    : <img className="file-icon" src="/images/add.svg" />
+                                }
+                                <p className="file-detail">{hasFile ? 'Ready' : 'Upload Here'}</p>
+                            </div>
+                        </div>
+                    )}
 
-                    </div>
                     <div className="tape-spool">
                         <div className="tape-spoolbar">
                             <div></div>

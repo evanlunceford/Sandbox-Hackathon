@@ -28,7 +28,6 @@ from repositories.h5_repo import H5Repo
 from repositories.vector_repo import VectorRepo
 from services.embedding_service import EmbeddingService
 
-
 def vectorize(batch_size: int = 100, start: int = 0, limit: int | None = None) -> None:
     songs_dir = os.getenv("SONGS_DIR", "./data/MillionSongSubset")
     all_paths = H5Repo.get_all_paths(songs_dir)
