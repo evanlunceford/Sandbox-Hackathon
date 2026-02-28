@@ -1,42 +1,72 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+.app {
+  position: relative;
+  z-index: 5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 1.5rem;
+  gap: 2.5rem;
+}
+
+.header {
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.site-title {
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-white);
+  margin: 0;
+  cursor: default;
+  user-select: none;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.subtitle {
+  color: var(--text-muted);
+  margin: 0;
+  font-size: var(--font-size-md);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  width: 100%;
 }
 
-.card {
-  padding: 2em;
+.error {
+  color: var(--error);
+  font-size: var(--font-size-sm);
+  margin: 0;
 }
 
-.read-the-docs {
-  color: #888;
+/* ── Cassette area ── */
+.cassette-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  transition: transform 0.7s cubic-bezier(0.55, 0, 1, 0.45), opacity 0.5s ease;
+}
+
+.cassette-area.dropping {
+  transform: translateY(200%);
+  opacity: 0;
+}
+
+/* Submit button — fades in once a file is loaded */
+.cassette-submit {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease 0.15s, transform 0.4s ease 0.15s;
+  pointer-events: none;
+}
+
+.cassette-submit.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }

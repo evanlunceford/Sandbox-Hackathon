@@ -1,0 +1,230 @@
+@import url('https://fonts.googleapis.com/css2?family=Lilex:ital,wght@0,100..700;1,100..700&display=swap');
+
+:root {
+    /* ========================
+       PRIMARY COLORS
+    ======================== */
+
+    --yellow: #FFF275;
+    --yellow-hover: #FFE85A;
+    --yellow-active: #F5D944;
+
+    --orange: #FF8C42;
+    --orange-hover: #F47F36;
+    --orange-active: #E46F27;
+
+    --red: #FF3C38;
+    --red-hover: #E8322F;
+    --red-active: #D72A27;
+
+    --maroon: #A23E48;
+    --maroon-hover: #8E353E;
+    --maroon-active: #7A2C34;
+
+    --blue: #6C8EAD;
+    --blue-hover: #5E7E9C;
+    --blue-active: #506F8A;
+
+    --black: #231f20;
+    --black-hover: #1A1718;
+
+    --grey: #7d7d7d;
+    --grey-hover: #6A6A6A;
+
+    /* ========================
+       BEIGE / LIGHT SYSTEM
+    ======================== */
+
+    --beige-50: #FDFBF7;   /* almost white */
+    --beige-100: #F7F2E8;
+    --beige-200: #EFE6D6;
+    --beige-300: #E6D9C2;
+
+    --beige: #F7F2E8;
+    --beige-hover: #EFE6D6;
+    --beige-active: #E6D9C2;
+
+    --white: #FFFFFF;
+    --white-hover: #F8F8F8;
+    --white-active: #F1F1F1;
+
+    /* ========================
+       UI STATE COLORS
+    ======================== */
+
+    --border-light: #E5E5E5;
+    --border-dark: #D1D1D1;
+
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 10px rgba(0,0,0,0.08);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.12);
+
+    /* ========================
+       TYPOGRAPHY SCALE
+    ======================== */
+
+    --font-size-base: 1rem;
+
+    --font-size-xxs: 0.5rem;
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+
+    --font-size-md: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+
+    --font-size-h6: 1.25rem;
+    --font-size-h5: 1.5rem;
+    --font-size-h4: 1.875rem;
+    --font-size-h3: 2.25rem;
+    --font-size-h2: 3rem;
+    --font-size-h1: 3.75rem;
+
+    --font-size-display-sm: 4.5rem;
+    --font-size-display-md: 6rem;
+    --font-size-display-lg: 8rem;
+
+    /* ========================
+       DARK SURFACE SYSTEM
+    ======================== */
+
+    --pure-black: #000000;
+    --surface: #1e1e1e;
+    --surface-elevated: #2a2a2a;
+    --border-subtle: #2e2e2e;
+    --border-medium: #3a3a3a;
+    --border-hover: #444444;
+
+    /* ========================
+       TEXT HIERARCHY (DARK)
+    ======================== */
+
+    --text-primary: #e0e0e0;
+    --text-secondary: #999999;
+    --text-muted: #888888;
+    --text-dim: #666666;
+    --text-tertiary: #555555;
+    --text-heading: #aaaaaa;
+    --text-white: #ffffff;
+
+    /* ========================
+       ACCENT / FEEDBACK
+    ======================== */
+
+    --accent: #646cff;
+    --accent-hover: #535bf2;
+    --accent-green: #4caf82;
+    --error: #f87171;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margin & padding */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Prevent font size inflation */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  line-height: 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Remove list styles */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Reset headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/* Reset paragraphs */
+p {
+  margin: 0;
+}
+
+/* Reset anchor styles */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Remove default button styling */
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+/* Remove button appearance */
+button {
+  cursor: pointer;
+}
+
+/* Remove textarea resize by default */
+textarea {
+  resize: none;
+}
+
+/* Reset table styles */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Remove default image spacing */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Remove fieldset styles */
+fieldset {
+  border: 0;
+}
+
+/* Remove quote styling */
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
+  content: "";
+  content: none;
+}
+

@@ -16,3 +16,6 @@ dist/
 *.log
 
 *.claude
+
+# Million Song Subset HDF5 files (large binary data, not committed)
+data/
