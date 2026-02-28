@@ -7,8 +7,9 @@ import './css/SubmitButton.css';
 import CassettePlayer from './components/CassettePlayer';
 import TitleEffect from './components/TitleEffect';
 import TypingEffect from './components/TypingEffect';
+import SongCarousel from './components/SongCarousel';
 
-const API_URL = 'http://localhost:8000';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 const DROP_DURATION = 700;
 
 const DESCRIPTION_PHRASES = [
@@ -16,9 +17,6 @@ const DESCRIPTION_PHRASES = [
   "I am a new man every morning. Each day I rediscover music. / Pablo Casals",
   "Music is the space between the notes. / Claude Debussy",
   "To achieve great things, two things are needed: a plan and not quite enough time. / Leonard Bernstein",
-  "If something is boring after two minutes, try it for four. If still boring, then eight. Then sixteen. Eventually one discovers that it is not boring at all. / John Cage",
-  "The real voyage of discovery consists not in seeking new landscapes, but in having new eyes. / Marcel Proust",
-  "We shall not cease from exploration And the end of all our exploring Will be to arrive where we started And know the place for the first time. / T.S. Eliot",
   "Without music, life would be a mistake. / Friedrich Nietzsche",
   "Repetition is a form of change. / Brian Eno",
   "No man ever steps in the same river twice. / Heraclitus",
@@ -31,7 +29,15 @@ export default function App() {
   const [results, setResults] = useState(null);
   const [error, setError] = useState(null);
   const [randomQuote, setRandomQuote] = useState('');
+  const [introStep, setIntroStep] = useState(0);
   const inputRef = useRef(null);
+
+  // Intro sequence: title renders → cassette fades up → subtitle + footer fade in
+  useEffect(() => {
+    const t1 = setTimeout(() => setIntroStep(1), 1800); // after title reveal (~1.8s)
+    const t2 = setTimeout(() => setIntroStep(2), 2700); // after cassette settles (+ ~0.9s)
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, []);
 
   useEffect(() => {
     function pickQuote() {
@@ -95,6 +101,14 @@ export default function App() {
     }
   }
 
+  const onBack = () => {
+    setPhase('idle');
+    setFile(null);
+    setResults(null);
+    setError(null);
+    setIntroStep(2);
+  };
+
   const isDropping = phase === 'dropping';
   const isResults = phase === 'results';
 
@@ -110,7 +124,7 @@ export default function App() {
                   <h1 className="site-title">
                     <TitleEffect text="Mr. Cassette" speed={100} revealDelay={60} />
                   </h1>
-                  <p className="subtitle">Not an LLM</p>
+                  {introStep >= 1 && <p className="subtitle subtitle-intro">Not an LLM</p>}
                 </>
               )}
             </header>
@@ -119,7 +133,7 @@ export default function App() {
               {error && <p className="error">{error}</p>}
 
               {!isResults && (
-                <div className={`cassette-area${isDropping ? ' dropping' : ''}`}>
+                <div className={`cassette-area${introStep >= 2 ? ' cassette-entered' : ''}${isDropping ? ' dropping' : ''}`}>
                   <CassettePlayer
                     title={file ? file.name : 'Upload any file'}
                     hasFile={!!file}
@@ -132,43 +146,12 @@ export default function App() {
               )}
 
               {isResults && results && (
-                <section className="results results-enter">
-                  <h2 className="results-title">Top Matches</h2>
-                  <div className="cards">
-                    {results.map((song, i) => (
-                      <div key={song.song_id} className="card">
-                        <div className="card-rank">#{i + 1}</div>
-                        <div className="card-body">
-                          <div className="card-title">{song.title}</div>
-                          <div className="card-artist">
-                            {song.artist}
-                            {song.year > 0 && (
-                              <span className="card-year"> · {song.year}</span>
-                            )}
-                          </div>
-                          {song.artist_terms.length > 0 && (
-                            <div className="card-tags">
-                              {song.artist_terms.slice(0, 5).map(tag => (
-                                <span key={tag} className="tag">
-                                  {tag}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                        <div className="card-score">
-                          {Math.round(song.score * 100)}%
-                          <div className="score-label">match</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </section>
+                <SongCarousel songs={results} onBack={onBack}/>
               )}
             </main>
 
-            {!isResults && (
-              <footer className="page-footer">
+            {!isResults && introStep >= 1 && (
+              <footer className="page-footer footer-intro">
                 {file ? (
                   <button
                     className={`submit-btn cassette-submit${file ? ' visible' : ''}`}
