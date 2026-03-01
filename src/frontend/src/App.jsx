@@ -11,16 +11,20 @@ import SongCarousel from './components/SongCarousel';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
 const DROP_DURATION = 700;
+const MAX_FILE_SIZE_MB = 10;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+const SESSION_LIMIT = 10;
 
 const DESCRIPTION_PHRASES = [
-  "The tradition is not the worship of ashes, but the preservation of fire. / Gustav Mahler",
-  "I am a new man every morning. Each day I rediscover music. / Pablo Casals",
-  "Music is the space between the notes. / Claude Debussy",
-  "To achieve great things, two things are needed: a plan and not quite enough time. / Leonard Bernstein",
+  "Music can change the world because it can change people. / Bono",
   "Without music, life would be a mistake. / Friedrich Nietzsche",
-  "Repetition is a form of change. / Brian Eno",
-  "No man ever steps in the same river twice. / Heraclitus",
-  "Live the questions now. / Rainer Maria Rilke"
+  "Music expresses that which cannot be put into words and that which cannot remain silent. / Victor Hugo",
+  "One good thing about music, when it hits you, you feel no pain. / Bob Marley",
+  "Where words fail, music speaks. / Hans Christian Andersen",
+  "Music is the strongest form of magic. / Marilyn Manson",
+  "If I cannot fly, let me sing. / Stephen Sondheim",
+  "The only truth is music. / Jack Kerouac",
+  "Music acts like a magic key, to which the most tightly closed heart opens. / Maria von Trapp"
 ];
 
 export default function App() {
@@ -32,10 +36,9 @@ export default function App() {
   const [introStep, setIntroStep] = useState(0);
   const inputRef = useRef(null);
 
-  // Intro sequence: title renders → cassette fades up → subtitle + footer fade in
   useEffect(() => {
-    const t1 = setTimeout(() => setIntroStep(1), 1800); // after title reveal (~1.8s)
-    const t2 = setTimeout(() => setIntroStep(2), 2700); // after cassette settles (+ ~0.9s)
+    const t1 = setTimeout(() => setIntroStep(1), 1800);
+    const t2 = setTimeout(() => setIntroStep(2), 2700);
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, []);
 
@@ -56,6 +59,10 @@ export default function App() {
 
   function handleFile(f) {
     if (f && f.type === 'application/pdf') {
+      if (f.size > MAX_FILE_SIZE_BYTES) {
+        setError(`PDF must be under ${MAX_FILE_SIZE_MB} MB.`);
+        return;
+      }
       setFile(f);
       setPhase('ready');
       setResults(null);
@@ -76,8 +83,16 @@ export default function App() {
 
   async function onSubmit() {
     if (!file) return;
+
+    const sessionCount = parseInt(sessionStorage.getItem('submitCount') || '0', 10);
+    if (sessionCount >= SESSION_LIMIT) {
+      setError('Session upload limit reached. Please open a new tab to continue.');
+      return;
+    }
+
     setPhase('dropping');
     setError(null);
+    sessionStorage.setItem('submitCount', String(sessionCount + 1));
 
     try {
       const body = new FormData();

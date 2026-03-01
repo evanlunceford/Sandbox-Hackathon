@@ -21,7 +21,6 @@ def _client() -> QdrantClient:
 class VectorRepo:
     @staticmethod
     def ensure_collection() -> None:
-        """Create the Qdrant collection if it does not already exist."""
         client = _client()
         existing = [c.name for c in client.get_collections().collections]
         if COLLECTION_NAME not in existing:
@@ -35,7 +34,6 @@ class VectorRepo:
 
     @staticmethod
     def upsert_songs(songs: list[dict], vectors: list[list[float]]) -> None:
-        """Upsert song vectors and metadata into Qdrant."""
         client = _client()
         points = [
             PointStruct(
@@ -57,7 +55,6 @@ class VectorRepo:
 
     @staticmethod
     def search(vector: list[float], top_k: int = 5) -> list[ScoredPoint]:
-        """Return the top_k most similar songs by cosine similarity."""
         client = _client()
         result = client.query_points(
             collection_name=COLLECTION_NAME,

@@ -1,111 +1,137 @@
-# Project Setup Guide
+# Mr. Cassette
 
-This guide walks through how to get the frontend and backend running on your machine.
+A semantic music recommendation engine. Upload any PDF and it returns the five songs from the Million Song Dataset whose embedded meaning most closely matches your document.
+
+---
+
+## How It Works
+
+1. **Upload** — the user drops a PDF onto the frontend.
+2. **Extract** — the backend pulls raw text from the PDF (capped at 8,000 characters).
+3. **Embed** — the text is embedded using the Google Gemini `gemini-embedding-001` model with a `RETRIEVAL_QUERY` task type.
+4. **Search** — the resulting vector is compared against pre-indexed song vectors stored in Qdrant using cosine similarity.
+5. **Return** — the top 5 matching songs are sent back and displayed.
+
+Songs are indexed offline: each song's title, artist, album, genre, tags, and year are combined into a text description and embedded with a `RETRIEVAL_DOCUMENT` task type, then stored in Qdrant.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React 19, Vite |
+| Backend | Python, FastAPI |
+| Embeddings | Google Gemini API (`gemini-embedding-001`) |
+| Vector DB | Qdrant |
+| Song Data | Million Song Subset (HDF5 files) |
 
 ---
 
 ## Prerequisites
 
-Make sure you have the following installed before anything else:
+- [Node.js](https://nodejs.org/) v18+
+- [Python](https://www.python.org/) v3.10+
+- A [Qdrant](https://qdrant.tech/) instance (cloud or self-hosted)
+- A [Google AI Studio](https://aistudio.google.com/) API key with Gemini access
+- The [Million Song Subset](http://millionsongdataset.com/pages/getting-dataset/#subset) HDF5 files
 
-- [Node.js](https://nodejs.org/) (v18 or higher) — required for the frontend
-- [Python](https://www.python.org/downloads/) (v3.10 or higher) — required for the backend
+---
 
-You can verify your installations by opening a terminal and running:
+## Environment Variables
+
+Create a `.env` file in `src/backend/` with the following:
 
 ```
-node -v
-python --version
+GEMINI_API_KEY=your_google_ai_studio_key
+QDRANT_URL=https://your-qdrant-instance-url
+QDRANT_API_KEY=your_qdrant_api_key
+SONGS_DIR=/path/to/MillionSongSubset
+```
+
+| Variable | Description |
+|---|---|
+| `GEMINI_API_KEY` | API key from [Google AI Studio](https://aistudio.google.com/) |
+| `QDRANT_URL` | URL of your Qdrant instance |
+| `QDRANT_API_KEY` | API key for your Qdrant instance |
+| `SONGS_DIR` | Path to the root of your Million Song Subset directory |
+
+---
+
+## Installing Dependencies
+
+**Frontend:**
+```bash
+cd src/frontend
+npm install
+```
+
+**Backend:**
+```bash
+pip install fastapi uvicorn pypdf google-generativeai qdrant-client h5py python-dotenv
 ```
 
 ---
 
-## Running the Frontend
+## Indexing Songs
 
-1. Open a terminal
-2. Navigate to the frontend folder:
-   ```
-   cd src/frontend
-   ```
-3. Install dependencies (only needs to be done once):
-   ```
-   npm install
-   ```
-4. Start the dev server:
-   ```
-   npm run dev
-   ```
+Before the app can make recommendations, songs need to be embedded and stored in Qdrant. Run the vectorization script from `src/backend/`:
 
-The frontend will be running at **http://localhost:5173**. The page hot-reloads automatically whenever you save a file, so you don't need to restart it.
+```bash
+# Index the first 100 songs (sanity check)
+python scripts/vectorize_songs.py --batch-size 100 --limit 100
+
+# Index 500 more, starting after the first 100
+python scripts/vectorize_songs.py --batch-size 100 --start 100 --limit 500
+
+# Index all songs in batches of 200
+python scripts/vectorize_songs.py --batch-size 200
+```
+
+The script reads each `.h5` file, builds a text description of the song, embeds it via Gemini, and upserts it into Qdrant. It can be stopped and resumed using `--start`.
 
 ---
 
-## Running the Backend
+## Running the App
 
-1. Open a **separate** terminal (keep the frontend one running)
-2. Install the required Python packages (only needs to be done once):
-   ```
-   pip install fastapi uvicorn
-   ```
-3. Navigate to the backend folder:
-   ```
-   cd src/backend
-   ```
-4. Start the server:
-   ```
-   python main.py
-   ```
+Start both servers in separate terminals.
 
-The backend will be running at **http://localhost:8000**. The `--reload` flag means it restarts automatically when you save changes.
+**Backend** (from `src/backend/`):
+```bash
+python main.py
+```
+Runs at `http://localhost:8000`.
+
+**Frontend** (from `src/frontend/`):
+```bash
+npm run dev
+```
+Runs at `http://localhost:5173`.
 
 ---
 
-## Frontend Code Structure
-
-All frontend source code lives in `src/frontend/src/`. Here is how it should be organized:
+## Project Structure
 
 ```
-src/frontend/src/
-├── css/               # All stylesheets go here
-├── components/        # Reusable UI pieces (buttons, navbars, cards, etc.)
-├── pages/             # Top-level page components (Home, About, Dashboard, etc.)
-├── assets/            # Images, icons, static files
-├── App.jsx            # Root component — wires pages together
-└── main.jsx           # Entry point — do not modify this
+src/
+├── backend/
+│   ├── main.py                        # FastAPI app and CORS config
+│   ├── routers/
+│   │   └── recommendation_router.py   # POST /recommend/ endpoint
+│   ├── services/
+│   │   ├── pdf_service.py             # PDF text extraction
+│   │   ├── embedding_service.py       # Gemini embedding calls
+│   │   └── recommendation_service.py  # Orchestrates embed + search
+│   ├── repositories/
+│   │   ├── vector_repo.py             # Qdrant read/write
+│   │   └── h5_repo.py                 # HDF5 song file reading
+│   └── scripts/
+│       └── vectorize_songs.py         # Offline indexing script
+└── frontend/
+    └── src/
+        ├── App.jsx                    # Main component and app logic
+        └── components/
+            ├── CassettePlayer.jsx     # Retro cassette UI
+            ├── TitleEffect.jsx        # Title reveal animation
+            └── TypingEffect.jsx       # Typing animation
 ```
-
-### css/
-Any `.css` file goes in here. If a component has its own styles, create a file named after it — e.g., `Navbar.css` alongside a `Navbar.jsx` in `components/`.
-
-### components/
-For anything that appears in multiple places or is a self-contained UI element. Examples: a navigation bar, a button, a modal, a card. Each component should be its own file:
-
-```
-components/
-├── Navbar.jsx
-├── Footer.jsx
-└── Card.jsx
-```
-
-### pages/
-Each page of the site gets its own file here. These are the top-level views that the router will switch between:
-
-```
-pages/
-├── Home.jsx
-├── About.jsx
-└── Dashboard.jsx
-```
-
-A page can import and use components, but components should not import pages.
-
----
-
-## Quick Reference
-
-| Task              | Command                        | Directory         |
-|-------------------|--------------------------------|-------------------|
-| Start frontend    | `npm run dev`                  | `src/frontend`    |
-| Start backend     | `python main.py`               | `src/backend`     |
-| Install frontend deps | `npm install`              | `src/frontend`    |
-| Install backend deps  | `pip install fastapi uvicorn` | anywhere     |

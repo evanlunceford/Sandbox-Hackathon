@@ -14,7 +14,6 @@ def _configure() -> None:
 class EmbeddingService:
     @staticmethod
     def build_song_text(song: dict) -> str:
-        """Build a descriptive text string from song metadata for embedding."""
         parts = [f"{song['title']} by {song['artist']}"]
         if song.get("release"):
             parts.append(f"Album: {song['release']}")
@@ -28,7 +27,6 @@ class EmbeddingService:
 
     @staticmethod
     def embed_batch(texts: list[str]) -> list[list[float]]:
-        """Embed a list of song texts for indexing (RETRIEVAL_DOCUMENT task type)."""
         _configure()
         return [
             genai.embed_content(model=MODEL, content=text, task_type="RETRIEVAL_DOCUMENT")[
@@ -39,7 +37,6 @@ class EmbeddingService:
 
     @staticmethod
     def embed_query(text: str) -> list[float]:
-        """Embed PDF-extracted text for querying (RETRIEVAL_QUERY task type)."""
         _configure()
         result = genai.embed_content(model=MODEL, content=text, task_type="RETRIEVAL_QUERY")
         return result["embedding"]
